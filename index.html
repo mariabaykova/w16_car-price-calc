@@ -10,24 +10,26 @@
 <body>
     <div class="wrapper">
         <div class="header">
-            <img calass="header__logo" src="" alt="">
+            <img class="header__logo" src="" alt="">
         </div>
         
         <div class="main">
             <h1>Калькулятор стоимости автомобиля</h1>
             <div class="calculator">
-                <form action="#" class="calculator__form">
+                <!-- <form action="#" class="calculator__form"> -->
                     <div class="calculator__section">
                         <div class="calculator__section-title">Марка</div>
                         <select name="car-brand" id="car-brand-select" class="calculator__brand">
                     
                         </select>
+                    
                     </div>
                     <div class="calculator__section">
                         <div class="calculator__section-title">Модель</div>
                         <select name="car-model" id="car-model-select" class="calculator__model">
 
                         </select>
+                    
                     </div>
 
                     <div class="calculator__section">
@@ -36,6 +38,7 @@
                         <div class="calculator__items-box" id="type-of-drive-select">
 
                         </div>
+                       
                     </div>
                     <div class="calculator__section">
                         <div class="calculator__section-title">Салон</div>
@@ -49,48 +52,18 @@
                         <div class="calculator__section-title">Год выпуска</div>
                         <!-- input text + labels + name is the same  "calculator__year-of-issue"-->
                         <div class="calculator__items-box">
-                            <input type="text" name="year-select" value="">
+                            <input type="text" name="year-select" id="year-select" value="">
                         </div>
                     </div> 
-                    <button type="submit" class="calculator__button">Оценить автомобиль</button>
-                </form>
+                    <div class="calculator__err-box" id="err-box">
+                        ddd
+                    </div>
+                    <button type="button" class="calculator__button" >Оценить автомобиль</button>
+                <!-- </form> -->
             </div>
 
             <div class="result">
-                <h2 class="result-title">Результаты рассчетов</h2>
-                <div class="result__table">
-                    <div class="result__row">
-                        <div class="result__title">Марка</div>
-                        <div class="result__value"></div>
-                        <div class="result__price"></div>
-                    </div>
-                    <div class="result__row">
-                        <div class="result__title">Модель</div>
-                        <div class="result__value"></div>
-                        <div class="result__price"></div>
-                    </div>
-                    <div class="result__row">
-                        <div class="result__title">Привод</div>
-                        <div class="result__value"></div>
-                        <div class="result__price"></div>
-                    </div>
-                    <div class="result__row">
-                        <div class="result__title">Салон</div>
-                        <div class="result__value"></div>
-                        <div class="result__price"></div>
-                    </div>
-                    <div class="result__row">
-                        <div class="result__title">Год выпуска</div>
-                        <div class="result__value"></div>
-                        <div class="result__price"></div>
-                    </div>
-                    <div class="result__row">
-                        <div class="result__title">Итого:</div>
-                        <div class="result__value"></div>
-                        <div class="result__price"></div>
-                    </div>
-
-                </div>
+            
             </div>
         </div>
         
