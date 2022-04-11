@@ -75,20 +75,6 @@ let cars = {
     }
 };
 
-
-
-// let b = "audi";
-// let m = "idA1";
-
-// console.log( cars );
-// console.log( cars[b] );
-// console.log( cars[b].name );
-
-// console.log( cars[b].models );
-// console.log( cars[b].models[m] );
-// console.log( "--> " + cars[b].models[m].price );
-// console.log( cars[b].models[m].name );
-
 // привод - только один вариант, из этого списка сделаем radio
 let typeOfDrive = {
     fourWeel: {
@@ -105,13 +91,6 @@ let typeOfDrive = {
     }
 
 };
-
-// let d = "rear";
-// console.log(typeOfDrive);
-// console.log(typeOfDrive[d]);
-// console.log(typeOfDrive[d].name);
-// console.log(typeOfDrive[d].price);
-
 // эти опции подразумевают множественный выбор checkbox
 let vehicleInterior = {
     sunroof: {
@@ -144,16 +123,7 @@ let vehicleInterior = {
     }
 };
 
-// let rr = "leatherInt";
-// console.log(vehicleInterior);
-// console.log(vehicleInterior[rr]);
-// console.log(vehicleInterior[rr].name);
-// console.log(vehicleInterior[rr].price);
-// let now = new Date();
-// alert( now.getFullYear() );
-
 let calculatorSections = document.querySelectorAll(".calculator__section");
-// console.log(calculatorSections[2]);
 
 // спрячем все блоки формы, кроме первого - марки авто
 hideSections(0);
@@ -165,12 +135,9 @@ let brandSelection = document.getElementById("car-brand-select");
 let modelSelection = document.getElementById("car-model-select");
 let driveSelection = document.getElementById("type-of-drive-select");
 let salonSelection = document.getElementById("salon-select");
-// let yearSelection = document.getElementById("year-select");
 
 let errorBlock = document.querySelector(".calculator__err-box");
 removeErrors();
-
-console.log("errorBlock " + errorBlock.style.display);
 
 // блок для показа рассчета
 let resultBlock = document.querySelector(".result");
@@ -183,7 +150,7 @@ let totalPrice = 0;
 
 // заполним список марок авто
 // сначала пустая 
-createItemOfList(
+createItemOfSelect(
     {
         name: "brand-option",
         value: "",
@@ -194,7 +161,7 @@ createItemOfList(
 );
 
 for ( let brand in cars ) {
-    createItemOfList(
+    createItemOfSelect(
         {
             name: "brand-option",
             value: brand,
@@ -206,18 +173,18 @@ for ( let brand in cars ) {
 }
 
 brandSelection.addEventListener( 'change', (event) => {
-    // при изменении подгружаем нужный список моделей или скрываем все calculatorSections после 0-й
-    console.log("--> " + event.target.value.length);  
+    // при изменении подгружаем нужный список моделей или скрываем список моделей, если не выбран бренд
     let checkedBrand = event.target.value;
     let modelList = cars[checkedBrand] ? cars[checkedBrand].models : undefined;
-    // тут нужно очистить все списки, которые после бренда
+    // тут нужно очистить список моделей
+    // список типов приводов, опций и год выпуска в принципе можно не очищать, 
+    // потому что они фактически не зависят от бренда и модели
     clearList(modelSelection);
-    // и очистить ошибки
+    // очистить ошибки и блок с итоговой таблицей
     removeErrors();
     removeResults()
     if (modelList) {
-        console.log(modelList);
-        createItemOfList(
+        createItemOfSelect(
             {
                 name: "model-option",
                 value: "",
@@ -226,9 +193,8 @@ brandSelection.addEventListener( 'change', (event) => {
             },
             modelSelection
         );
-        // clearList(modelSelection);
         for ( let model in modelList ) {
-            createItemOfList(
+            createItemOfSelect(
                 {
                     name: "model-option",
                     value: model,
@@ -241,24 +207,20 @@ brandSelection.addEventListener( 'change', (event) => {
         // открыть секцию со списком моделей
         calculatorSections[1].style.display = "";
     } else {
-        console.log("no list");
         // скрыть секцию со списком моделей
         hideSection(1);
     }
-    // console.log(modelSelection.lastElementChild);
 
 } );
 
-modelSelection.addEventListener( 'change', (event) => {
-    console.log("modelSelection " + event.target.value);  
+modelSelection.addEventListener( 'change', (event) => { 
     let checkedModel = event.target.value;
     removeErrors();
     removeResults();
     if ( checkedModel ) {
-        console.log("there is a checked model " + checkedModel);
         // заполняем список типов двигателей
         for ( let driveType in typeOfDrive ) {
-            createItemOfList1(
+            createItemOfList(
                 {
                     name: "drive-radio",
                     value: driveType,
@@ -268,11 +230,10 @@ modelSelection.addEventListener( 'change', (event) => {
                 },
                 driveSelection
             );
-            // console.log(driveSelection);
         }
         // заполняем список опций салона
         for ( let interiorOption in vehicleInterior ) {
-            createItemOfList1(
+            createItemOfList(
                 {
                     name: "salon-checkbox",
                     value: interiorOption,
@@ -282,7 +243,6 @@ modelSelection.addEventListener( 'change', (event) => {
                 },
                 salonSelection
             );
-            // console.log(salonSelection);
         }
 
         // показать оставшиеся 3 секции
@@ -291,8 +251,7 @@ modelSelection.addEventListener( 'change', (event) => {
         calculatorSections[4].style.display = "";
         
     } else {
-        console.log("there is no checked model");
-        // скрыть и очистить список с приводами, салоном и годом выпуска
+        // console.log("there is no checked model");
     }
 },  {once: true});
 
@@ -302,12 +261,8 @@ let button = document.querySelector(".calculator__button");
 console.log("calculator__button --> " + button);
 
 button.addEventListener( 'click', (event) => {
+    removeResults();
     let driveRadioSelection = document.getElementsByName("drive-radio");
-    // console.log("event " + event.target);
-    // console.log("driveRadioSelection --> " + driveRadioSelection);
-    // for ( let d of driveRadioSelection ) {
-    //     console.log(">> " + d.checked);
-    // }
     let salonChboxSelection = document.getElementsByName("salon-checkbox");
     let yearSelection = document.getElementById("year-select");
 
@@ -318,12 +273,10 @@ button.addEventListener( 'click', (event) => {
     let selectedModel = "";
     let selectedDrive = "";
     let selectedYear = yearSelection ? yearSelection.value : "";
-    console.log("selectedYear " + yearSelection);
     // опции салона, которые были выбраны в форме
     let selectedSalon = [];
 
     totalPrice = 0;
-    // let results = [];
     if ( !brandSelection.value ) {
         errors.push("Не указана марка автомобиля");
     } else {
@@ -357,8 +310,6 @@ button.addEventListener( 'click', (event) => {
     }
 
     // если есть ошибки, вывести их
-    // console.log("errs --> " + errors);
-
     if ( errors.length ) {
         // показать блок с ошибками
         showErrors();
@@ -404,11 +355,6 @@ button.addEventListener( 'click', (event) => {
             }
         );
         totalPrice += priceByYearOfIssue( selectedYear );
-        // console.log("results " + results);
-        // for ( let i of results ) {
-        //     console.log("results i" + i.title + " " + i.price );
-        // }
-        // console.log("total " + totalPrice);
         // показать результат
         showResults();
     }
@@ -422,24 +368,18 @@ function showErrors() {
 function removeErrors() {
     errors = [];
     errorBlock.style.display = "none";
-    errorBlock.innerHTML = "";
+    errorBlock.textContent = "";
 }
 
 function showResults() {
     resultBlock.style.display = ( results.length ) ? "" : "none";
-    // resultBlock.textContent = ( results.length ) ? results.join('<br>') : "";
     let resTitle = document.createElement("h2");
     resTitle.textContent = "Результаты рассчетов";
     resultBlock.appendChild(resTitle);
-    
+
     for ( let i = 0; i < results.length; i++ ) {
         let divRow = createResCell("");
         resultBlock.appendChild(divRow);
-
-        // let divColLeft = document.createElement("div");
-        // let divColRight = document.createElement("div");
-        // divColLeft.textContent = results[i].title;
-        // divColRight.textContent = results[i].price;
 
         divRow.appendChild(createResCell(results[i].title));
         divRow.appendChild(createResCell(results[i].price));
@@ -470,11 +410,7 @@ function clearList ( parentElem ) {
     }
 }
 
-function removeLastItemFromList ( parentElem ) {
-    parentElem.removeChild( parentElem.lastElementChild );
-}
-
-function createItemOfList1 ( item, parentElem ) {
+function createItemOfList ( item, parentElem ) {
     // для создания radio & checkbox
     // item.name - что в атрибуте name
     // item.value - что в атирибуте value
@@ -489,7 +425,6 @@ function createItemOfList1 ( item, parentElem ) {
     newItem.setAttribute("name", item.name);
     newItem.setAttribute("value", item.value);
     newItem.setAttribute("id", item.value);
-    // newItem.textContent = item.textContent;
     newItem.setAttribute("type", item.type);
     divBox.appendChild(newItem);
 
@@ -500,7 +435,7 @@ function createItemOfList1 ( item, parentElem ) {
 }
 
 
-function createItemOfList ( item, parentElem ) {
+function createItemOfSelect ( item, parentElem ) {
     // для создания пункта в выпадающем списке
     // item.name - что в атрибуте name
     // item.value - что в атирибуте value
@@ -518,7 +453,6 @@ function createItemOfList ( item, parentElem ) {
 // скрыть calculator__section после n-ого
 function hideSections ( n ) {
     for ( let i = 0; i < calculatorSections.length; i++ ) {
-        // console.log("--> " + calculatorSections[i].style);
         if ( i > n ) { 
             calculatorSections[i].style.display = "none";
         }
@@ -530,8 +464,6 @@ function hideSection ( n ) {
     calculatorSections[n].style.display = "none";
 }
 
-// console.log("==> " + priceByYearOfIssue("2006") );
-
 function checkYearOfIssue( yyyy ) {
     if ( !/^\d{4}$/.test(String(yyyy).trim()) ) {
         return "Год задан не корректно";
@@ -539,22 +471,19 @@ function checkYearOfIssue( yyyy ) {
     let now = new Date();
     let curYear = now.getFullYear();
 
-    // console.log( typeof yyyy);
-
     if ( curYear < Number(yyyy) ) {
         return "Год выпуска не может быть больше " + curYear;
     }
 
-    // console.log("cur " + curYear);
     let issueYear = new Date(yyyy);
     
     let carAge = Math.floor((now.getTime() - issueYear.getTime()) / (1000 * 3600 * 24 * 365));
     
     if ( carAge >= 100 ) {
-    return "Слишком старый автомобиль";
-   }
+        return "Слишком старый автомобиль";
+    }
 
-   return "";
+    return "";
 }
 
 
@@ -576,8 +505,9 @@ function priceByYearOfIssue( yyyy ) {
    } else if ( carAge >= 20 && carAge < 100 ) {
         return 1;
    } else if ( carAge >= 100 ) {
+    //    сюда попасть не должно
     return 0.5;
    }
-
+    //    сюда попасть не должно
    return 0.3;
 }

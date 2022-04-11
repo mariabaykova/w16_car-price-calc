@@ -59,13 +59,16 @@
     margin-top: 10px;
 }
 
+.result h2 {
+    margin: 10px 5px 10px 7px;
+}
+
 .result div {
     display: flex;
     /* border: 1px red solid; */
     justify-content: space-between;
     background-color: aliceblue;
-    margin-top: 2px;
-    margin-bottom: 2px;
+    margin: 2px 5px 2px 5px;
 }
 
 .result div div {
